@@ -24,7 +24,7 @@
   "author": "sizhao",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.10",
     "universal-router": "^6.0.0"
   },
   "devDependencies": {
