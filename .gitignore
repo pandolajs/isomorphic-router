@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+.vscode
+build
+node_modules
+coverage
+npm-debug.log
+yarn-error.log
