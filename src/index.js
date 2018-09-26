@@ -31,11 +31,7 @@ const DEFAULT = {
 */
 class IsomorphicRouter {
   constructor(requireContext, options){
-    this.middlewares = [
-      async (context, next) => {
-        return await next()
-      }
-    ]
+    this.middlewares = []
     const opts = this.options = Object.assign({}, DEFAULT, options)
     this.catchError = DEFAULT.catchError
     let filteredPath = []
@@ -77,23 +73,18 @@ class IsomorphicRouter {
   router(){
     const { middlewares, catchError } = this
     const routes = {
-      path: '/',
+      path: '',
       children: this.children,
       async action(context){
-        let route
-        let { next } = context
-
-        const composed = middlewares.reduce((next, cur) => context => {
+        const composed = middlewares.reduceRight((next, cur) => context => {
           try{
             return Promise.resolve(cur(context, next))
           }catch(error){
             return Promise.reject(error)
           }
-        }, next)
+        }, () => {})
 
-        route = await composed(context)
-
-        return route
+        return composed(context)
       }
     }
     const router = new UniversalRouter(routes, Object.assign({}, pick(this.options, ['baseUrl', 'context', 'resolveRoute']), { errorHandler: catchError }))
